@@ -24,7 +24,7 @@ stage('DeployApp into Deployment')
 {
     sshagent(['6b10f5cd-c61e-4cb7-89a7-f33b4cc90f5e']) {
     
-sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/myntra-pipeline-job/target/maven-web-application.war ec2-user@13.234.29.129:/opt/apache-tomcat-9.0.33/webapps/"
+sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/myntra-pipeline-job/target/maven-web-application.war ec2-user@13.235.91.123:/opt/apache-tomcat-9.0.33/webapps/"
 }
 }
 stage('Send email notification')
