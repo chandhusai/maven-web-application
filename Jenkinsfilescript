@@ -1,0 +1,35 @@
+node 
+{
+    def mavenHome = tool name: "maven-3.6.3"
+    properties([[$class: 'JiraProjectProperty'], buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')), pipelineTriggers([pollSCM('* * * * *')])])
+    
+stage('CheckoutCode')
+{
+    git branch: 'development', credentialsId: 'd4651f22-02a5-4e0e-876f-31c19f0ede15', url: 'https://github.com/chandhusai/maven-web-application.git'
+}
+stage('BuildPackage')
+{
+    sh "${mavenHome}/bin/mvn clean package"
+}
+stage('Generate SonarQube Report')
+{
+    sh "${mavenHome}/bin/mvn sonar:sonar"
+    
+}
+stage('Store Build artifact into remote repo')
+{
+    sh "${mavenHome}/bin/mvn deploy"
+}
+stage('DeployApp into Deployment')
+{
+    sshagent(['6b10f5cd-c61e-4cb7-89a7-f33b4cc90f5e']) {
+    
+sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/myntra-pipeline-job/target/maven-web-application.war ec2-user@13.234.29.129:/opt/apache-tomcat-9.0.33/webapps/"
+}
+}
+stage('Send email notification')
+{
+    emailext body: 'Build is over', subject: 'Build is over', to: 'saichandkotapati7@gmail.com'
+}
+
+}
