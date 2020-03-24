@@ -1,4 +1,4 @@
-node('jenkins-node-1')
+node
 {
     def mavenHome = tool name: "maven-3.6.3"
     properties([[$class: 'JiraProjectProperty'], buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')), pipelineTriggers([pollSCM('* * * * *')])])
