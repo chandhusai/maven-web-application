@@ -7,7 +7,7 @@ stage('CheckoutCode')
 {
     git branch: 'master', credentialsId: 'd4651f22-02a5-4e0e-876f-31c19f0ede15', url: 'https://github.com/chandhusai/maven-web-application.git'
 }
-stage('BuildPackage-maven')
+stage('BuildPackage-maven Artifact')
 {
     sh "${mavenHome}/bin/mvn clean package"
 }
